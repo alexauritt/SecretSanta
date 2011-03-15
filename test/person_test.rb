@@ -13,5 +13,15 @@ class PersonTest < Test::Unit::TestCase
     assert_equal "alex@alex.com", @p.email
   end
   
+  def test_santa_id
+    assert_nil @p.santa_target_id
+    @p.santa_target_id = 6
+    assert_equal 6, @p.santa_target_id
+  end
+  
+  def test_id
+    assert_equal 6, @p.id
+  end
+  
   
 end

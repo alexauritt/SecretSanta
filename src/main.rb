@@ -11,20 +11,3 @@ def create_people_from(file)
   end
   people
 end
-
-def create_families_from(people)
-  families = initialize_families_from(people)
-  calculate_family_size(people, families)
-end
-
-def initialize_families_from(people)
-  family_names = people.map { |person| person.last_name }
-  family_names.uniq!
-  families = family_names.map { |name| Family.new(name) }  
-end
-
-def calculate_family_size(people, families)
-  families.each do |family|
-    family.size = people.count {|person| person.last_name == family.name }
-  end
-end
