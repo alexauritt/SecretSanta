@@ -1,6 +1,7 @@
 require "test/unit"
 require_relative '../src/main'
 require_relative '../src/family'
+require_relative '../src/person'
 
 class MainTest < Test::Unit::TestCase
   def setup

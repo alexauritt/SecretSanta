@@ -1,4 +1,4 @@
-require_relative 'person'
+# require_relative 'person'
 
 def create_people_from(file)
   people = []
