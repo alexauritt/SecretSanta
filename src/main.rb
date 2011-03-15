@@ -1,4 +1,5 @@
-# require_relative 'person'
+require_relative 'person'
+require_relative 'santa_assigner'
 
 def create_people_from(file)
   people = []
@@ -11,3 +12,8 @@ def create_people_from(file)
   end
   people
 end
+
+# people = create_people_from("/Users/alexauritt/Programming/RubyDev/rubyquiz/secret_santa/test/samples/persons.txt")
+# sa = SantaAssigner.new(people)
+# sa.assign_santas!
+# sa.print_list!
