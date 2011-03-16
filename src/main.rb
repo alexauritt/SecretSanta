@@ -13,7 +13,9 @@ def create_people_from(file)
   people
 end
 
-# people = create_people_from("/Users/alexauritt/Programming/RubyDev/rubyquiz/secret_santa/test/samples/persons.txt")
-# sa = SantaAssigner.new(people)
-# sa.assign_santas!
-# sa.print_list!
+def do_it!
+  people = create_people_from("/Users/alexauritt/Programming/RubyDev/rubyquiz/secret_santa/test/samples/persons.txt")
+  sa = SantaAssigner.new(people)
+  sa.assign_santas!
+  sa.print_list!
+end

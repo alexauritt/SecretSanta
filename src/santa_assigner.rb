@@ -13,7 +13,7 @@ class SantaAssigner
   end
 
   def assign_santas!
-    while (!people_with_no_targets_assigned.empty?)
+    until people_with_no_targets_assigned.empty?
       santa = fussiest_person_with_no_target
       target = find_acceptable_target_for(santa)
       santa.santa_target_id = target.id
@@ -26,32 +26,32 @@ class SantaAssigner
     end
   end
   
+  private
+
   def people_with_no_targets_assigned
     no_targs = people.select {|p| p.santa_target_id == nil }
     no_targs.sort_by! { |p| p.valid_target_count }
   end
-  
+
   def find_acceptable_target_for(person)
     acceptable_targets = unassigned_targets.delete_if {|p| same_family?(p,person) }
     acceptable_targets[rand(acceptable_targets.size)]
   end
-  
+
   def fussiest_person_with_no_target
     people_with_no_targets_assigned.first
   end
-  
+
   def assigned_targets
     targets = @people.map {|p| p.santa_target_id }
     targets.compact!
     targets.uniq!
     @people.select { |p| targets.include? p.id }
   end
-  
+
   def unassigned_targets
     @people - assigned_targets
   end
-    
-private
 
   def set_family_references!
     @people.each {|p| p.family = find_family_by_name(p.last_name) }

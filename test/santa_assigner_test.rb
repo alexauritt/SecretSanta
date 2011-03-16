@@ -24,11 +24,11 @@ class SantaAssignerTest < Test::Unit::TestCase
   end
   
   def test_assigned_targets_direct_from_file
-    assert_equal [], @assigner.assigned_targets
+    assert_equal [], @assigner.send(:assigned_targets)
   end
 
   def test_unassigned_targets_direct_from_file
-    unassigned = @assigner.unassigned_targets
+    unassigned = @assigner.send(:unassigned_targets)
     unassigned.uniq!
     assert_equal 7, unassigned.size
   end
@@ -41,8 +41,8 @@ class SantaAssignerTest < Test::Unit::TestCase
     @person3.santa_target_id = @person1.id
     assigner.people = [@person1,@person2,@person3]
     
-    assert_equal [@person1], assigner.assigned_targets
-    assert_equal [@person2,@person3], assigner.unassigned_targets
+    assert_equal [@person1], assigner.send(:assigned_targets)
+    assert_equal [@person2,@person3], assigner.send(:unassigned_targets)
   end
   
   def test_assert_raise_if_person_with_target_id_passed_in
@@ -69,21 +69,21 @@ class SantaAssignerTest < Test::Unit::TestCase
   end
 
   def test_people_with_no_targets_assigned_is_initially_full
-    assert_equal @people, @assigner.people_with_no_targets_assigned
+    assert_equal @people, @assigner.send(:people_with_no_targets_assigned)
   end
   
   def test_people_with_no_targets_assigned_is_empty_after_assignment
     @assigner.assign_santas!
-    assert @assigner.people_with_no_targets_assigned.empty?
+    assert @assigner.send(:people_with_no_targets_assigned).empty?
   end
   
   def test_fussiest_person_with_no_target
-    assert_equal 5, @assigner.fussiest_person_with_no_target.valid_target_count
+    assert_equal 5, @assigner.send(:fussiest_person_with_no_target).valid_target_count
   end
     
   def test_find_acceptable_target_for
     assigner = SantaAssigner.new([@person1,@person2,@person3]) #persons 1 and 2 from same family, person 3 from diff. see setup
-    assert_equal @person3, assigner.find_acceptable_target_for(@person1)
+    assert_equal @person3, assigner.send(:find_acceptable_target_for, @person1)
   end
   
   def test_assign_santas
