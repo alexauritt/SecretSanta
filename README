@@ -1,0 +1,6 @@
+in progress: http://rubyquiz.com/quiz2.html
+
+Todo:
+add ensure_no_family_too_large!
+
+check occasional null error... algorithm prob?
