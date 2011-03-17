@@ -9,6 +9,7 @@ class SantaAssignerTest < Test::Unit::TestCase
     @person1 = Person.new(2,"Fred","James","asdf@asdf.com")
     @person2 = Person.new(3,"Mark","James","mark@asdf.com")
     @person3 = Person.new(4,"Missy","Pents","asdfasdf@asdf.com")
+    @person4 = Person.new(5, "Audrey", "Frantics", "audsbauds@asd.com")
 
     @people = create_people_from("/Users/alexauritt/Programming/RubyDev/rubyquiz/secret_santa/test/samples/persons.txt")
     @assigner = SantaAssigner.new @people
@@ -35,9 +36,6 @@ class SantaAssignerTest < Test::Unit::TestCase
   
   def test_assigned_and_unassigned_targets
     assigner = SantaAssigner.new([])
-    @person1 = Person.new(2,"Fred","Jims","asdf@asdf.com")
-    @person2 = Person.new(3,"Mark","James","mark@asdf.com")
-    @person3 = Person.new(4,"Missy","Pents","asdfasdf@asdf.com")
     @person3.santa_target_id = @person1.id
     assigner.people = [@person1,@person2,@person3]
     
@@ -84,6 +82,22 @@ class SantaAssignerTest < Test::Unit::TestCase
   def test_find_acceptable_target_for
     assigner = SantaAssigner.new([@person1,@person2,@person3]) #persons 1 and 2 from same family, person 3 from diff. see setup
     assert_equal @person3, assigner.send(:find_acceptable_target_for, @person1)
+  end
+  
+  def test_decrement_valid_target_counts!
+    assigner = SantaAssigner.new([@person1,@person2,@person3,@person4])
+    assert_equal 2, @person1.valid_target_count
+    assert_equal 2, @person2.valid_target_count
+    assert_equal 3, @person3.valid_target_count
+    assert_equal 3, @person4.valid_target_count
+    
+    @person1.santa_target_id = @person3.id
+    
+    assigner.send(:decrement_valid_target_counts!, @person3)
+    
+    assert_equal 1, @person2.valid_target_count
+    assert_equal 3, @person3.valid_target_count
+    assert_equal 2, @person4.valid_target_count    
   end
   
   def test_assign_santas

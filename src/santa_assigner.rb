@@ -17,6 +17,7 @@ class SantaAssigner
       santa = fussiest_person_with_no_target
       target = find_acceptable_target_for(santa)
       santa.santa_target_id = target.id
+      decrement_valid_target_counts! target
     end
   end
 
@@ -55,6 +56,11 @@ class SantaAssigner
 
   def set_family_references!
     @people.each {|p| p.family = find_family_by_name(p.last_name) }
+  end
+  
+  def decrement_valid_target_counts!(recently_assigned_target)
+    non_family_members = @people.select { |p| p.last_name != recently_assigned_target.last_name }
+    non_family_members.each { |p| p.valid_target_count -= 1 unless p.valid_target_count == 0 } 
   end
 
   def all_targets_nil?
