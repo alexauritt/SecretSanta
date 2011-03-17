@@ -8,6 +8,7 @@ class SantaAssigner
 
     set_family_references!
     ensure_no_targets_are_set!
+    ensure_no_family_too_large!
     calculate_initial_valid_targets!
     sort_by_flexibilty!
   end
@@ -76,6 +77,12 @@ class SantaAssigner
   def ensure_no_targets_are_set!
     init_error = ArgumentError.new("SantaAssigner was initialized with at least one person that already has a target santa!")
     raise init_error unless all_targets_nil?
+  end
+  
+  def ensure_no_family_too_large!
+    too_large_family_error = ArgumentError.new("One of the families was too large")
+    family_sizes = @families.map {|fam| fam.size }
+    raise too_large_family_error if (family_sizes.max * 2 > @people.size)
   end
   
   def calculate_initial_valid_targets!

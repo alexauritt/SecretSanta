@@ -35,6 +35,7 @@ class SantaAssignerTest < Test::Unit::TestCase
   end
   
   def test_assigned_and_unassigned_targets
+    SantaAssigner.any_instance.stubs(:ensure_no_family_too_large!)
     assigner = SantaAssigner.new([])
     @person3.santa_target_id = @person1.id
     assigner.people = [@person1,@person2,@person3]
@@ -80,6 +81,7 @@ class SantaAssignerTest < Test::Unit::TestCase
   end
     
   def test_find_acceptable_target_for
+    SantaAssigner.any_instance.stubs(:ensure_no_family_too_large!)
     assigner = SantaAssigner.new([@person1,@person2,@person3]) #persons 1 and 2 from same family, person 3 from diff. see setup
     assert_equal @person3, assigner.send(:find_acceptable_target_for, @person1)
   end
@@ -100,7 +102,13 @@ class SantaAssignerTest < Test::Unit::TestCase
     assert_equal 2, @person4.valid_target_count    
   end
   
-  def test_assign_santas
+  def test_family_too_large_error_caught
+    assert_raise ArgumentError do
+      assigner = SantaAssigner.new([@person1,@person2,@person3]) #persons 1 and 2 from same family, person 3 from diff. first fam too big
+    end
+  end
+    
+  def test_assign_santas!
     @assigner.assign_santas!
   
     assert_no_santa_targets_are_nil(@people)
